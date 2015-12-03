@@ -119,6 +119,14 @@ public class Client {
     public final BioMetadata bioMetadata = new BioMetadata();
 
     /**
+     * Provides access to rna quantification-related methods.  For example,
+     * <pre>
+     *     myClient.rnaquantification.searchRnaQuantification(...);
+     * </pre>
+     */
+    public final RnaQuantifications rnaquantifications = new RnaQuantifications();
+
+    /**
      * Create a new client that can make requests on a GA4GH server.
      *
      * @param urls an URLMAPPING object that gives us the paths to use
@@ -607,6 +615,30 @@ public class Client {
             return builder.build();
         }
 
+    }
+
+    /**
+     * Inner class holding all rna quantification-related methods.  Gathering them in an inner class like
+     * this
+     * makes it a little easier for someone writing tests to use their IDE's auto-complete
+     * to type method names.
+     */
+    public class RnaQuantifications implements RnaQuantificationMethods {
+        /**
+         * Gets a {@link RnaQuantification} by ID.
+         * <tt>GET /referencesets/{id}</tt> returns a {@link RnaQuantification}.
+         *
+         * @param id the rna quantification ID
+         * @throws AvroRemoteException if there's a communication problem
+         */
+        @Override
+        public RnaQuantification getRnaQuantification(String id) throws AvroRemoteException {
+            String path = urls.getRnaQuantification();
+            RnaQuantification response = new RnaQuantification();
+            final AvroJson aj = new AvroJson<>(response, urls.getUrlRoot(), path);
+            response = (RnaQuantification) aj.doGetResp(id);
+            return response;
+        }
     }
 
 }
