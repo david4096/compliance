@@ -3,6 +3,7 @@ package org.ga4gh.ctk;
 import junit.framework.*;
 import org.apache.tools.ant.*;
 import org.apache.tools.ant.taskdefs.optional.junit.*;
+import org.ga4gh.ctk.transport.URLMAPPING;
 import org.junit.runner.*;
 import org.junit.runner.notification.*;
 import org.slf4j.*;
@@ -10,7 +11,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.*;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import com.google.common.collect.Table;
+import org.ga4gh.ctk.transport.avrojson.AvroJson;
 /**
  * <p>Route JUnit test events into the TESTLOG</p>
  * <p>Normal use is to be attached to a JunitCore as a listener, or to
@@ -195,6 +200,22 @@ public class TestExecListener extends RunListener implements JUnitResultFormatte
      */
     @Override
     public void endTest(Test test) {
+        String name = test.toString().substring(0, test.toString().indexOf("("));//description.getMethodName();
+        String resultsbase = "testresults/";
+        String urlRoot = URLMAPPING.getInstance().getUrlRoot();
+        String filename = ResultsSupport.getLastResultsDir(urlRoot) + "report/html/traffic/" + name + ".html";
+        try {
+            PrintWriter writer = new PrintWriter(filename);
+            writer.println("<h1 id=\"" + name + "\">" + name + "</h1>");
+
+            for (Table.Cell<String, String, Integer> cell : AvroJson.getMessages().cellSet()) {
+                writer.println("<pre>" + cell.getRowKey() + " " + cell.getColumnKey() + " " + cell.getValue() + "</pre>");
+            }
+            writer.close();
+        } catch (FileNotFoundException ex) {
+            testlog.error("Couldn't create file" + filename);
+        }
+        //test.toString().substring(0, test.toString().indexOf("(")) + ".traffic");
         testlog.debug("test: " + test.toString());
     }
 

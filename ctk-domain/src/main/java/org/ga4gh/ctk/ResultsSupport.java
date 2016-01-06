@@ -55,7 +55,51 @@ public class ResultsSupport implements CtkLogs{
         String paddedMax = String.format("%05d", maxseen + 1);
         String tgtdir = dir.toString() + "/" + paddedMax + "/";
         new File(tgtdir).mkdir();
+        new File(tgtdir + "/traffic/").mkdir();
         log.debug("calculated test results dir of " + tgtdir);
         return tgtdir;
     }
+
+    public synchronized static String getLastResultsDir(String urlRoot) {
+        // we could cut down the synchronized size a lot, or even
+        // do a temp dir and just rebame it when done, but no need yet
+        String resultsbase = "testresults/"; // TODO move to property
+        File resultDir = null;
+        URL tgt;
+        try {
+            tgt = new URL(urlRoot);
+        } catch (MalformedURLException e) {
+            log.warn("Malformed urlRoot " + urlRoot);
+            return "";
+        }
+        int maxseen = 0;
+        Path dir = Paths.get(resultsbase + tgt.getAuthority().replace(":", "_"));
+        if (dir.toFile().exists()) {
+            // if it doesn't exist then
+            // we haven't seen this target, so maxseen is fine at zero
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+                for (Path path : stream) {
+                    log.trace("testing file named " + path.getFileName());
+                    String name = path.getName(path.getNameCount() - 1).toString();
+                    try {
+                        int thisDir = Integer.parseInt(name);
+                        if (thisDir > maxseen && path.toFile().isDirectory())
+                            maxseen = thisDir;
+                    } catch (Exception e) {
+                    }
+                }
+            } catch (IOException e) {
+                log.warn("getResultsDir for Path " + dir.toString() + " got IOException ", e);
+            }
+        }
+        String paddedMax = String.format("%05d", maxseen);
+        String tgtdir = dir.toString() + "/" + paddedMax + "/";
+        new File(tgtdir).mkdir();
+        new File(tgtdir + "/report/").mkdir();
+        new File(tgtdir + "/report/html/").mkdir();
+        new File(tgtdir + "/report/html/traffic/").mkdir();
+        log.debug("calculated test results dir of " + tgtdir);
+        return tgtdir;
+    }
+
 }

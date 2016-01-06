@@ -810,9 +810,9 @@ h6 {
                 <td>Success</td>
                 <td></td>
             </xsl:otherwise>
-        </xsl:choose>
+        </xsl:choose>file:///Users/david/ga4gh/compliance-david/testresults/localhost_8000/00001/report/htmltestGetByIdMatchesSearch.html
         <td>
-          <a href="{concat('/' , $output.dir, @name, '.html')}">link</a>
+          <a href="{concat($output.dir, '/traffic/', @name, '.html')}">link</a>
         </td>
         <td>
             <xsl:call-template name="display-time">
