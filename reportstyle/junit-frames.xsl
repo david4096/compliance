@@ -812,7 +812,7 @@ h6 {
             </xsl:otherwise>
         </xsl:choose>
         <td>
-          LINK
+          <a href="{concat('/' , $output.dir, @name, '.html')}">link</a>
         </td>
         <td>
             <xsl:call-template name="display-time">
