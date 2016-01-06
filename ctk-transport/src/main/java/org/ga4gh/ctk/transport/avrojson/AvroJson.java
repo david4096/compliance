@@ -260,12 +260,12 @@ public class AvroJson<Q extends SpecificRecordBase, P extends SpecificRecordBase
         String respName = theResp != null ? theResp.getClass().getSimpleName()  : "null";
         if (theAvroReq == null) {
             // it's a GET request, so no request object
-            messages.put(postOrGet + " <" + jsonStr + ">", respName,
-                         httpResp != null ? httpResp.getStatus() : 0);
+            messages.put(Thread.currentThread().getStackTrace()[4].getMethodName(), postOrGet + " <" + jsonStr + "> " + " " + respName + theResp.toString(),
+                    httpResp != null ? httpResp.getStatus() : 0);
         } else {
-            messages.put(theAvroReq.getClass()
-                                   .getSimpleName() + postOrGet + " <" + jsonStr + ">", respName,
-                         httpResp != null ? httpResp.getStatus() : 0);
+            messages.put(Thread.currentThread().getStackTrace()[4].getMethodName(), theAvroReq.getClass()
+                            .getSimpleName() + " " + postOrGet + " < " + jsonStr + " > + " + respName + " < " + theResp.toString() + " > ",
+                    httpResp != null ? httpResp.getStatus() : 0);
         }
     }
 
