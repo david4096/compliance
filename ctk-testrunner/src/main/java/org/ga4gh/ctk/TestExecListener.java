@@ -203,7 +203,14 @@ public class TestExecListener extends RunListener implements JUnitResultFormatte
         String name = test.toString().substring(0, test.toString().indexOf("("));//description.getMethodName();
         String resultsbase = "testresults/";
         String urlRoot = URLMAPPING.getInstance().getUrlRoot();
-        String filename = ResultsSupport.getLastResultsDir(urlRoot) + "report/html/traffic/" + name + ".html";
+        String filename = "";
+        try {
+            filename = ResultsSupport.getLastResultsDir(urlRoot) + "report/html/traffic/" + java.net.URLEncoder.encode(name, "ascii") + ".html";
+        }
+        catch (java.io.UnsupportedEncodingException e)
+        {
+            testlog.error("failed to encode filename " + ResultsSupport.getLastResultsDir(urlRoot) + "report/html/traffic/" + name + ".html");
+        }
         try {
             PrintWriter writer = new PrintWriter(filename);
             writer.println("<h1 id=\"" + name + "\">" + name + "</h1>");
