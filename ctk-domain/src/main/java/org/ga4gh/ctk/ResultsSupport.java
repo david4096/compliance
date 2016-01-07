@@ -24,7 +24,6 @@ public class ResultsSupport implements CtkLogs{
         // we could cut down the synchronized size a lot, or even
         // do a temp dir and just rebame it when done, but no need yet
         String resultsbase = "testresults/"; // TODO move to property
-        File resultDir = null;
         URL tgt;
         try {
             tgt = new URL(urlRoot);
@@ -63,7 +62,6 @@ public class ResultsSupport implements CtkLogs{
         // we could cut down the synchronized size a lot, or even
         // do a temp dir and just rebame it when done, but no need yet
         String resultsbase = "testresults/"; // TODO move to property
-        File resultDir = null;
         URL tgt;
         try {
             tgt = new URL(urlRoot);
