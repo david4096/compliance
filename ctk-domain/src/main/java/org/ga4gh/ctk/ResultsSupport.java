@@ -55,7 +55,6 @@ public class ResultsSupport implements CtkLogs{
         String paddedMax = String.format("%05d", maxseen + 1);
         String tgtdir = dir.toString() + "/" + paddedMax + "/";
         new File(tgtdir).mkdir();
-        new File(tgtdir + "/traffic/").mkdir();
         log.debug("calculated test results dir of " + tgtdir);
         return tgtdir;
     }
