@@ -25,6 +25,9 @@ import static org.ga4gh.ctk.transport.RespCode.fromInt;
 import static org.ga4gh.ctk.transport.TransportUtils.makeUrl;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 /**
  * <p>Provide Avro/Json communications layer specific to GA4GH and with extensive logging in
  * support of CTK use.</p>
@@ -258,13 +261,36 @@ public class AvroJson<Q extends SpecificRecordBase, P extends SpecificRecordBase
         }
         // track all message types sent/received for simple "test coverage" indication
         String respName = theResp != null ? theResp.getClass().getSimpleName()  : "null";
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
+        JsonElement uglyReq;
+        JsonElement uglyResp;
+        try {
+            uglyResp = jp.parse(theResp.toString());
+        } catch (NullPointerException e) {
+            log.error("failed to parse" + theResp.toString());
+            uglyResp = jp.parse("{}");
+        }
+
+
+
+        String prettyResp = gson.toJson(uglyResp);
         if (theAvroReq == null) {
             // it's a GET request, so no request object
-            messages.put(Thread.currentThread().getStackTrace()[4].getMethodName(), postOrGet + " <" + jsonStr + "> " + " " + respName + theResp.toString(),
+
+
+            messages.put(Thread.currentThread().getStackTrace()[4].getMethodName(), postOrGet + " " + respName + theResp.toString(),
                     httpResp != null ? httpResp.getStatus() : 0);
         } else {
+            try {
+                uglyReq = jp.parse(jsonStr);
+            } catch (NullPointerException e) {
+                log.error("failed to parse" + jsonStr);
+                uglyReq = jp.parse("{}");
+            }
+            String prettyReq = gson.toJson(uglyReq);
             messages.put(Thread.currentThread().getStackTrace()[4].getMethodName(), theAvroReq.getClass()
-                            .getSimpleName() + " " + postOrGet + " < " + jsonStr + " > + " + respName + " < " + theResp.toString() + " > ",
+                            .getSimpleName() + " " + postOrGet + " < " + prettyReq + " > + " + respName + " < " + prettyResp + " > ",
                     httpResp != null ? httpResp.getStatus() : 0);
         }
     }

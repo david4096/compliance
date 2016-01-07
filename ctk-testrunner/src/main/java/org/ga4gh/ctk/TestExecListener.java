@@ -213,11 +213,15 @@ public class TestExecListener extends RunListener implements JUnitResultFormatte
         }
         try {
             PrintWriter writer = new PrintWriter(filename);
+            writer.println("<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" title=\"Style\" href=\"stylesheet.css\"></head><body>\n");
+
+
             writer.println("<h1 id=\"" + name + "\">" + name + "</h1>");
 
             for (Table.Cell<String, String, Integer> cell : AvroJson.getMessages().cellSet()) {
-                writer.println("<pre>" + cell.getRowKey() + " " + cell.getColumnKey() + " " + cell.getValue() + "</pre>");
+                writer.println("<pre><b>" + cell.getRowKey() + "</b><br /> " + cell.getColumnKey() + " " + cell.getValue() + "</pre><hr />");
             }
+            writer.println("</body></html>");
             writer.close();
         } catch (FileNotFoundException ex) {
             testlog.error("Couldn't create file" + filename);
