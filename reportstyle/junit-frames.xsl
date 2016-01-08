@@ -833,9 +833,6 @@ h6 {
               </xsl:otherwise>
             </xsl:choose>
           </xsl:param>
-          <xsl:value-of select="@name"/>
-          <xsl:value-of select="$safename"/>
-          
           <a href="{concat($output.dir, '/traffic/', $dblsafename, '.html')}">link</a>
         </td>
         <td>

@@ -201,7 +201,6 @@ public class TestExecListener extends RunListener implements JUnitResultFormatte
     @Override
     public void endTest(Test test) {
         String name = test.toString().substring(0, test.toString().indexOf("("));//description.getMethodName();
-        String resultsbase = "testresults/";
         String urlRoot = URLMAPPING.getInstance().getUrlRoot();
         String filename = "";
         try {
@@ -216,7 +215,7 @@ public class TestExecListener extends RunListener implements JUnitResultFormatte
             writer.println("<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" title=\"Style\" href=\"stylesheet.css\"></head><body>\n");
 
 
-            writer.println("<h1 id=\"" + name + "\">" + name + "</h1>");
+            writer.println("<h3 id=\"" + name + "\">" + test.toString() + "</h3>");
 
             for (Table.Cell<String, String, Integer> cell : AvroJson.getMessages().cellSet()) {
                 writer.println("<pre><b>" + cell.getRowKey() + "</b><br /> " + cell.getColumnKey() + " " + cell.getValue() + "</pre><hr />");
