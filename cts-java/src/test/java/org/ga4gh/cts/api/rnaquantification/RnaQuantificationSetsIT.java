@@ -40,5 +40,11 @@ public class RnaQuantificationSetsIT {
         assertThat(rnaQuantificationSetFromGet.getId()).isEqualTo(rnaQuantificationSetId);
     }
 
+    // search by datasetid
+
+    // search using a bad dataset ID finds nothing
+    // search using a good dataset ID finds something
+    // assert response is well formed
+
 
 }
