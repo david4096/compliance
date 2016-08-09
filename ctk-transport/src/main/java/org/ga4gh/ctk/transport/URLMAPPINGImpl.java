@@ -60,7 +60,6 @@ public class URLMAPPINGImpl implements URLMAPPING {
         defaultEndpoints.put("ctk.tgt.searchVariantSets", "variantsets/search");
         defaultEndpoints.put("ctk.tgt.searchVariants", "variants/search");
         defaultEndpoints.put("ctk.tgt.searchCallSets", "callsets/search");
-        defaultEndpoints.put("ctk.tgt.searchRnaQuantification", "rnaquantification/search");
         defaultEndpoints.put("ctk.tgt.searchRnaQuantification", "rnaquantifications/search");
         defaultEndpoints.put("ctk.tgt.searchRnaQuantificationSets", "rnaquantificationsets/search");
         defaultEndpoints.put("ctk.tgt.searchExpressionLevel", "expressionlevels/search");
