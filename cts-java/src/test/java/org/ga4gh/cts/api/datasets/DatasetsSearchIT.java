@@ -98,4 +98,22 @@ public class DatasetsSearchIT {
         }
     }
 
+    /**
+     * Ensures the dataset message has an info field.
+     *
+     * @throws GAWrapperException if the server finds the request invalid in some way
+     * @throws UnirestException if there's a problem speaking HTTP to the server
+     * @throws InvalidProtocolBufferException if there's a problem processing the JSON response from the server
+     */
+    @Test
+    public void checkDatasetInfoField() throws InvalidProtocolBufferException, UnirestException, GAWrapperException {
+        final SearchDatasetsRequest sdr = SearchDatasetsRequest.newBuilder().build();
+        final SearchDatasetsResponse resp = client.metadata.searchDatasets(sdr);
+        final List<Dataset> datasets = resp.getDatasetsList();
+
+        for (Dataset ds : datasets) {
+            assertThat(ds.getInfo()).isNotNull();
+        }
+    }
+
 }
